@@ -1,0 +1,200 @@
+[
+  {
+    "name": "Art Market",
+    "description": "Art community for sharing artwork, art trades, and meeting other artists.",
+    "tags": [
+      "art",
+      "digital-art",
+      "art-server",
+      "art-trades",
+      "community"
+    ],
+    "member_count": "77",
+    "invite_link": "https://disboard.org/server/1446685793912361065"
+  },
+  {
+    "name": "A Theoretical Book Club",
+    "description": "Reading community that reads two books per month and discusses other books.",
+    "tags": [
+      "books",
+      "literature",
+      "reading",
+      "book-club"
+    ],
+    "member_count": "2,681",
+    "invite_link": "https://disboard.org/server/584581061271617538"
+  },
+  {
+    "name": "backstreet",
+    "description": "Social community advertising active chat, voice channels, emojis, stickers, and giveaways.",
+    "tags": [
+      "community",
+      "giveaway",
+      "voice-chat",
+      "social"
+    ],
+    "member_count": "466",
+    "invite_link": "https://disboard.org/server/1555681986784268369"
+  },
+  {
+    "name": "The Digital Circus",
+    "description": "Unofficial fan community for The Amazing Digital Circus, including fan works and creator discussion.",
+    "tags": [
+      "animation",
+      "fandom",
+      "art",
+      "writing",
+      "cosplay"
+    ],
+    "member_count": "Unknown",
+    "invite_link": "https://disboard.org/server/1088910630339235870"
+  },
+  {
+    "name": "Beloved",
+    "description": "Gaming community for meeting friends and finding teammates for several games.",
+    "tags": [
+      "gaming",
+      "valorant",
+      "roblox",
+      "counter-strike",
+      "fortnite",
+      "friends"
+    ],
+    "member_count": "Unknown",
+    "invite_link": "https://disboard.org/server/1438336523589259344"
+  },
+  {
+    "name": "Formula One",
+    "description": "Formula One fan community for news, discussion, memes, artwork, fantasy, and events.",
+    "tags": [
+      "sports",
+      "motorsport",
+      "formula-1",
+      "racing"
+    ],
+    "member_count": "Unknown",
+    "invite_link": "https://discord.gg/BmNqydA"
+  },
+  {
+    "name": "The Wyvern Nest",
+    "description": "Artist community focused on original characters, commissions, art improvement, and challenges.",
+    "tags": [
+      "art",
+      "original-characters",
+      "commissions",
+      "artist-community"
+    ],
+    "member_count": "Unknown",
+    "invite_link": "https://discord.gg/pPVXCnMucv"
+  },
+  {
+    "name": "Desi District",
+    "description": "Pan-India community mentioning conversations, movie nights, games, sports, music, and multilingual chat.",
+    "tags": [
+      "india",
+      "social",
+      "community",
+      "hindi",
+      "telugu",
+      "movies",
+      "sports",
+      "music"
+    ],
+    "member_count": "Unknown",
+    "invite_link": null
+  },
+  {
+    "name": "HumSafar",
+    "description": "Social hangout community for meeting people and casual conversation.",
+    "tags": [
+      "india",
+      "social",
+      "hangout",
+      "gaming",
+      "friends",
+      "chat"
+    ],
+    "member_count": "Unknown",
+    "invite_link": null
+  },
+  {
+    "name": "800 Years of Nonsense",
+    "description": "Community for xianxia and Chinese fantasy fans, with reading, art, music, and recommendations.",
+    "tags": [
+      "music",
+      "xianxia",
+      "donghua",
+      "chinese-fantasy",
+      "books",
+      "art"
+    ],
+    "member_count": "Unknown",
+    "invite_link": null
+  },
+  {
+    "name": "The Cosmic Lair",
+    "description": "Space-themed gaming and social community with art, events, and custom bots.",
+    "tags": [
+      "gaming",
+      "furry",
+      "lgbtq-friendly",
+      "art",
+      "social",
+      "space"
+    ],
+    "member_count": "Unknown",
+    "invite_link": null
+  },
+  {
+    "name": "Stanley's Pizzeria",
+    "description": "Community associated with a Roblox game and FNAF-related fandom interests.",
+    "tags": [
+      "roblox",
+      "gaming",
+      "fandom",
+      "art",
+      "game-development"
+    ],
+    "member_count": "Unknown",
+    "invite_link": null
+  },
+  {
+    "name": "Keep Moving Forward",
+    "description": "Story-driven original-character roleplay community inspired by Attack on Titan.",
+    "tags": [
+      "roleplay",
+      "anime",
+      "attack-on-titan",
+      "original-characters",
+      "storytelling"
+    ],
+    "member_count": "Unknown",
+    "invite_link": null
+  },
+  {
+    "name": "The Discordo Crime Family",
+    "description": "Fan server for The Sopranos with show discussion and watch-along activities.",
+    "tags": [
+      "television",
+      "the-sopranos",
+      "hbo",
+      "fandom",
+      "discussion"
+    ],
+    "member_count": "Unknown",
+    "invite_link": null
+  },
+  {
+    "name": "Internet Links",
+    "description": "Community for sharing useful links, information, and resources.",
+    "tags": [
+      "learning",
+      "information",
+      "resources",
+      "collecting",
+      "community"
+    ],
+    "member_count": "Unknown",
+    "invite_link": null
+  }
+]

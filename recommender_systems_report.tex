@@ -1,0 +1,253 @@
+% Overleaf-ready report for the Recommender Systems mini project
+% Compile with pdfLaTeX. No external images are required.
+
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{listings}
+
+\definecolor{navy}{HTML}{1F2937}
+\definecolor{burgundy}{HTML}{7B2D3A}
+\definecolor{softgray}{HTML}{F4F4F2}
+\definecolor{codegray}{HTML}{F7F7F5}
+\definecolor{linkblue}{HTML}{1D4ED8}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=burgundy,
+    urlcolor=linkblue,
+    citecolor=burgundy,
+    pdftitle={Intelligent Discord Server Recommender},
+    pdfauthor={Vansh Sharma and Aditya Aman}
+}
+
+\setstretch{1.08}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt}
+\setlist[enumerate]{leftmargin=1.6em,itemsep=2pt,topsep=3pt}
+
+\titleformat{\section}
+  {\large\bfseries\color{navy}}{\thesection}{0.6em}{}
+\titleformat{\subsection}
+  {\normalsize\bfseries\color{burgundy}}{\thesubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{12pt}{5pt}
+\titlespacing*{\subsection}{0pt}{8pt}{3pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small Recommender Systems Project}
+\rhead{\small Vansh Sharma and Aditya Aman}
+\cfoot{\small \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    backgroundcolor=\color{codegray},
+    frame=single,
+    rulecolor=\color{black!15},
+    breaklines=true,
+    columns=fullflexible,
+    showstringspaces=false,
+    xleftmargin=6pt,
+    xrightmargin=6pt,
+    aboveskip=5pt,
+    belowskip=5pt
+}
+
+\begin{document}
+
+\begin{titlepage}
+    \thispagestyle{empty}
+    \centering
+    \vspace*{1.0cm}
+    {\large\bfseries\color{burgundy} MINI PROJECT REPORT\par}
+    \vspace{0.55cm}
+    \rule{0.82\textwidth}{0.8pt}\par
+    \vspace{0.55cm}
+    {\LARGE\bfseries\color{navy} Intelligent Discord Server Recommender\par}
+    \vspace{0.25cm}
+    {\large A Natural Language Based Recommender System\par}
+    \vspace{1.1cm}
+    \rule{0.35\textwidth}{1.5pt}\par
+    \vspace{1.0cm}
+    {\large\bfseries Submitted to\par}
+    \vspace{0.2cm}
+    {\Large Dr. Shivendra Dubey\par}
+    \vspace{0.2cm}
+    {\large Course Instructor\par}
+    \vfill
+    \begin{tabular}{>{\bfseries}p{0.42\textwidth} p{0.38\textwidth}}
+        Student & Registration Number \\
+        Vansh Sharma & 2427010625 \\
+        Aditya Aman & 2427010672 \\
+    \end{tabular}
+    \vspace{1.0cm}
+
+    \rule{0.82\textwidth}{0.8pt}\par
+    \vspace{0.25cm}
+    {\large Recommender Systems Project\par}
+\end{titlepage}
+
+\section*{Abstract}
+\addcontentsline{toc}{section}{Abstract}
+Online community directories contain many servers, but users often find it difficult to identify communities that match their interests. This project presents an intelligent Discord server recommender that accepts natural language messages, extracts user interests, and returns a ranked list of relevant Discord servers. The system combines a Groq compatible language model API with a transparent tag based scoring method. Server information is stored in a structured JSON dataset and can be collected from public DISBOARD listings using a rate limited scraper. The current seed dataset contains 15 servers and 55 distinct tags. The prototype supports conversational recommendations along with search, category, popular, random, and administrative reload commands. The project demonstrates how natural language processing and a simple explainable recommender can be combined in a practical Discord bot.
+
+\textbf{Keywords:} recommender system, Discord bot, natural language processing, tag matching, server discovery
+
+\tableofcontents
+\newpage
+
+\section{Introduction}
+
+Discord hosts communities for gaming, art, books, sports, music, technology, and many other interests. Although public directories make these communities searchable, a user still has to browse many listings or choose the correct keywords. This creates a discovery problem. A user may know what they enjoy, but may not know the exact tags or names used by a server directory.
+
+The proposed system addresses this problem through a Discord bot. A user can mention the bot and write a sentence such as, ``I like gaming and anime.'' The bot uses a language model to extract relevant interests, compares them with tags in its server database, ranks matching servers, and presents the best results in a Discord embed. This keeps the recommendation process close to the user's normal conversation.
+
+The project is designed as a student mini project, so the current implementation focuses on a complete and understandable flow rather than a complex production model. Its main strength is transparency. The system can explain a recommendation through matching tags and a visible score rule.
+
+\section{Problem Statement and Objectives}
+
+\subsection{Problem statement}
+Users need a convenient way to discover Discord servers that fit their interests. A basic keyword search is limited because it depends on exact terms and does not understand natural sentences. The system should therefore interpret ordinary user messages and produce a short, relevant list of communities.
+
+\subsection{Objectives}
+\begin{enumerate}
+    \item Accept natural language requests from users through Discord.
+    \item Extract one or more interests from each request.
+    \item Match the interests with tags stored for each Discord server.
+    \item Rank candidate servers using a simple and explainable score.
+    \item Return up to five recommendations with useful metadata and links.
+    \item Provide additional commands for search, category browsing, popularity, and random discovery.
+\end{enumerate}
+
+\section{System Design}
+
+The system contains four main layers: the Discord interaction layer, the language processing layer, the recommendation core, and the data layer. The interaction layer receives mentions, replies, and commands. The language processing layer sends a carefully written prompt to the language model and expects a comma separated list of interests. The recommendation core compares those interests with server tags. Finally, the response layer builds a clean Discord embed containing the results.
+
+\subsection{Processing workflow}
+\begin{enumerate}
+    \item The user mentions the bot or replies during an active conversation.
+    \item The message is cleaned by removing the bot mention.
+    \item The AI layer extracts interests such as \texttt{gaming}, \texttt{anime}, or \texttt{books}.
+    \item The recommender normalizes interests and server tags to lowercase.
+    \item Each server receives a score based on exact and partial tag matches.
+    \item Servers with a positive score and an HTTP link are sorted in descending order.
+    \item The top five servers are sent as a Discord embed.
+\end{enumerate}
+
+\subsection{Fallback conversation}
+If the bot cannot identify a clear interest, it does not return arbitrary recommendations. Instead, it asks the user to mention specific topics. This makes the interaction more natural and gives the user a chance to clarify the request. A small conversation state is stored for this follow-up flow.
+
+\section{Recommendation Method}
+
+The current recommendation method is content based. A server is represented by its name, description, tags, member count, and invite or directory link. The user's message is represented by a list of extracted interests. Recommendations are generated by comparing the two lists.
+
+For every user interest and every server tag, the system applies the following rules:
+
+\begin{itemize}
+    \item An exact match adds 10 points.
+    \item A partial substring match adds 5 points.
+    \item Servers with no positive score are excluded.
+    \item Only the five highest scoring servers are returned.
+\end{itemize}
+
+The scoring function can be expressed as:
+
+\begin{equation}
+    S(s) = \sum_{i \in I}\sum_{t \in T_s} m(i,t)
+\end{equation}
+
+where $S(s)$ is the score of server $s$, $I$ is the set of user interests, $T_s$ is the set of tags for server $s$, and $m(i,t)$ is 10 for an exact match, 5 for a partial match, and 0 otherwise. This method is easy to test and explain. For example, a query containing ``gaming'' gives a strong score to a server tagged ``gaming'', while a server containing only unrelated tags is not recommended.
+
+\section{Dataset and Data Collection}
+
+The bot reads its current data from \texttt{servers.json}. Every record follows a compact schema:
+
+\begin{lstlisting}
+{
+  "name": "Server Name",
+  "description": "Short description",
+  "tags": ["gaming", "community"],
+  "member_count": "1,000",
+  "invite_link": "https://discord.gg/example"
+}
+\end{lstlisting}
+
+The seed dataset contains 15 servers and 55 distinct tags. Examples include Art Market, A Theoretical Book Club, Beloved, Formula One, and The Digital Circus. The most frequent tags in the current dataset include \texttt{art}, \texttt{community}, \texttt{social}, \texttt{gaming}, and \texttt{fandom}.
+
+Additional records can be collected from the public DISBOARD directory. The scraper extracts listing names, descriptions, categories, directory links, and possible Discord invite URLs. It uses a conservative delay between requests, removes duplicates, records collection time, and attempts to validate invite links through Discord's public invite endpoint. Since listings and invite links can change, validation is treated as a time stamped observation rather than a permanent guarantee.
+
+\begin{table}[ht]
+    \centering
+    \caption{Current dataset summary}
+    \label{tab:dataset}
+    \begin{tabular}{lr}
+        \toprule
+        Measure & Value \\
+        \midrule
+        Seed servers & 15 \\
+        Distinct tags & 55 \\
+        Records with HTTP links & 7 \\
+        Records with known member counts & 3 \\
+        Maximum recommendations per request & 5 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{Implementation}
+
+The project is implemented in Python using \texttt{discord.py}. The main file creates the bot, loads the server data, processes messages, and sends recommendation embeds. The \texttt{ServerRecommender} class contains the data loading, category extraction, and matching logic. Separate command modules are stored in the \texttt{commands} directory. This structure keeps the main recommendation flow separate from commands such as \texttt{!search}, \texttt{!popular}, and \texttt{!random}.
+
+The language model request uses a Groq compatible chat completion endpoint. The prompt includes the available dataset categories and instructs the model to return only a comma separated list of interests. This output format makes it easy for Python to process the response. A second prompt is used when a user has not shared enough information, allowing the bot to ask a short conversational question.
+
+The response is generated as a Discord embed. For each server, the embed can show its name, description, categories, member count, and join or listing link. If no valid match is available, the bot returns a clear message and suggests public server directories instead of presenting an empty response.
+
+\section{Testing and Discussion}
+
+The prototype was checked using the local JSON dataset and the implemented command paths. The dataset loads into the recommender, categories can be collected from all records, and server matches are sorted by the calculated score. The command modules provide separate ways to test search, category browsing, popular servers, random discovery, and data reload without restarting the bot.
+
+The current results should be understood as a functional prototype rather than a statistical benchmark. The dataset is intentionally small, and only a few records have known member counts. There is also no user feedback loop yet. The system does not learn whether a user joined a recommended server, ignored it, or preferred another result. Therefore, the main evaluation at this stage is whether the end to end flow works correctly and whether the recommendations can be explained from the stored tags.
+
+\section{Limitations and Future Scope}
+
+The first limitation is catalogue size. Fifteen seed servers are enough to demonstrate the method, but not enough to provide broad coverage. The included scraper provides a path to larger snapshots, although collected records should be reviewed for tag quality and stale links. The second limitation is the simple scoring model. It does not currently use semantic similarity, server activity, ratings, or personal history.
+
+Future work can improve the project in the following directions:
+\begin{itemize}
+    \item Add more reviewed server records and regularly refresh metadata.
+    \item Combine tag matching with semantic similarity from text embeddings.
+    \item Use diversity rules so that the top five results are not too similar.
+    \item Learn from privacy aware join, skip, and rating signals.
+    \item Add multilingual interest extraction and more detailed user preferences.
+    \item Evaluate the recommender using relevance, click through, and user satisfaction measures.
+\end{itemize}
+
+\section{Conclusion}
+
+This project presents a practical Discord based recommender system for server discovery. It combines natural language understanding with a transparent content based ranking method. The user can describe interests in ordinary language, while the bot handles extraction, matching, ranking, and presentation. The modular Python structure and public directory collection tools provide a useful foundation for future improvements.
+
+The most important outcome is a complete and explainable recommendation flow. Even though the current dataset is small, the project demonstrates how a recommender system can be integrated into an everyday communication platform without making the user learn a complex search interface.
+
+\section*{References}
+\addcontentsline{toc}{section}{References}
+\begin{enumerate}[label={[\arabic*]}]
+    \item Discord.py Documentation. \url{https://discordpy.readthedocs.io/}
+    \item DISBOARD Public Server Directory. \url{https://disboard.org/servers}
+    \item Beautiful Soup Documentation. \url{https://beautiful-soup-4.readthedocs.io/}
+    \item Groq API Documentation. \url{https://console.groq.com/docs/}
+\end{enumerate}
+
+\end{document}
